@@ -30,7 +30,7 @@ mongoose.connect(process.env.MONGO_URI)
 // 🔥 EMAIL & OTP ENGINE
 // ==========================================
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: 'smtp.gmail.com',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
