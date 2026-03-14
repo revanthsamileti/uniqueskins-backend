@@ -42,23 +42,25 @@ const otpStore = new Map();
 app.post('/api/auth/send-otp', async (req, res) => {
     try {
         const { email } = req.body;
+        
+        // Generate the 4-digit OTP
         const otp = Math.floor(1000 + Math.random() * 9000).toString();
         
+        // Save it temporarily so you can verify it
         otpStore.set(email, { otp, expiresAt: Date.now() + 5 * 60 * 1000 });
 
-        const mailOptions = {
-            from: `"Unique Skins" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: 'Your Unique Skins Verification Code',
-            html: `<div style="font-family: Arial, sans-serif; text-align: center; padding: 20px;"><h2 style="color: #E60000;">UNIQUE SKINS</h2><p>Your verification code is:</p><h1 style="font-size: 40px; letter-spacing: 5px; color: #111;">${otp}</h1><p style="color: #888;">This code expires in 5 minutes.</p></div>`
-        };
+        // 🌟 THE DEVELOPER BYPASS 🌟
+        // Print it loud and clear in the Render Logs
+        console.log(`\n=========================================`);
+        console.log(`🔑 DEV MODE OTP FOR ${email}: ${otp}`);
+        console.log(`=========================================\n`);
 
-        await transporter.sendMail(mailOptions);
-        res.status(200).json({ message: "OTP sent successfully!" });
+        // Tell the website "Success!" so the screen changes instantly
+        return res.status(200).json({ message: "OTP generated successfully! Check Render Logs." });
 
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: "Failed to send email. Check your .env credentials." });
+        res.status(500).json({ error: "Failed to process OTP." });
     }
 });
 
